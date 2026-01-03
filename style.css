@@ -76,6 +76,13 @@ main {
     margin: 0;
 }
 
+.last-updated {
+    margin: 0.5rem 0 0 0;
+    font-size: 0.85rem;
+    opacity: 0.9;
+    font-weight: normal;
+}
+
 .card-content {
     padding: 1.5rem;
 }
@@ -106,6 +113,34 @@ main {
     font-size: 1.25rem;
     font-weight: 600;
     color: #1565c0;
+}
+
+.loading-placeholder {
+    color: #999 !important;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.error-message {
+    background: #ffebee;
+    color: #c62828;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    border-left: 4px solid #c62828;
+}
+
+.cached-note {
+    text-align: center;
+    color: #f57f17;
+    font-size: 0.85rem;
+    font-style: italic;
+    margin-top: 1rem;
+    margin-bottom: 0;
 }
 
 /* Border Wait Times */
