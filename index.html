@@ -88,10 +88,10 @@
             <div class="card-content camera-content">
                 <div class="video-wrapper">
                     <iframe 
-                        src="https://www.youtube.com/embed/9En2186vo5g?autoplay=1&mute=1" 
+                        src="https://www.youtube.com/embed/9En2186vo5g" 
                         title="Peace Bridge Live Camera" 
                         frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                         allowfullscreen>
                     </iframe>
                 </div>
@@ -430,10 +430,7 @@
 
         async function fetchBorderWaitTimes() {
             try {
-                const proxyUrl = 'https://api.allorigins.win/raw?url=';
-                const targetUrl = encodeURIComponent('https://bwt.cbp.gov/api/bwtpublic');
-                
-                const response = await fetch(proxyUrl + targetUrl);
+                const response = await fetch('https://bwt.cbp.gov/api/bwtpublic');
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 
                 const data = await response.json();
@@ -447,8 +444,9 @@
                 
                 const relevantPorts = ['090109', '090110', '090111', '090112'];
                 let borderHTML = '';
+                let portCount = 0;
                 
-                data.forEach((port, index) => {
+                data.forEach((port) => {
                     if (relevantPorts.includes(port.port_number)) {
                         const portName = portMap[port.port_number] || port.port_name;
                         const passengerDelay = parseInt(port.passenger_vehicle_delay) || 0;
@@ -456,6 +454,8 @@
                         let delayClass = 'wait-low';
                         if (passengerDelay > 30) delayClass = 'wait-high';
                         else if (passengerDelay > 15) delayClass = 'wait-moderate';
+                        
+                        if (portCount > 0) borderHTML += '<hr>';
                         
                         borderHTML += `
                             <div class="border-item">
@@ -467,7 +467,9 @@
                             </div>
                         `;
                         
-                        if (index < relevantPorts.length - 1) borderHTML += '<hr>';
+                        portCount++;
+                    }
+                });
                     }
                 });
 
@@ -484,15 +486,22 @@
                 }
             } catch (error) {
                 console.error('Border wait times fetch error:', error);
-                document.getElementById('border-error').textContent = 
-                    `⚠️ Unable to load border wait times: ${error.message}`;
-                document.getElementById('border-error').style.display = 'block';
+                
+                // CORS error likely - provide manual alternative
+                const manualHTML = `
+                    <div class="border-manual">
+                        <p class="border-cors-notice">⚠️ Unable to load live data due to browser security restrictions.</p>
+                        <p class="border-instruction">Visit <a href="https://bwt.cbp.gov/ViewAllPorts.html?com=1&pas=1&ped=1&plist=0901" target="_blank" rel="noopener noreferrer" class="border-link">CBP Border Wait Times</a> for live updates.</p>
+                    </div>
+                `;
+                
+                document.getElementById('border-error').style.display = 'none';
                 
                 const cached = localStorage.getItem('border-data');
-                if (cached) {
+                if (cached && !cached.includes('border-manual')) {
                     document.getElementById('border-data').innerHTML = cached + '<p class="cached-note">(Cached data)</p>';
                 } else {
-                    document.getElementById('border-data').innerHTML = '<p class="border-loading">No data available</p>';
+                    document.getElementById('border-data').innerHTML = manualHTML;
                 }
             }
         }

@@ -150,6 +150,38 @@ main {
     font-style: italic;
 }
 
+.border-manual {
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.border-cors-notice {
+    color: #f57f17;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.border-instruction {
+    color: #666;
+    line-height: 1.8;
+}
+
+.border-link {
+    color: #1565c0;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    background: #e3f2fd;
+    border-radius: 4px;
+    display: inline-block;
+    transition: background 0.3s ease;
+}
+
+.border-link:hover {
+    background: #bbdefb;
+    text-decoration: underline;
+}
+
 /* Live Camera Section */
 .camera-section {
     grid-column: 1 / -1;
