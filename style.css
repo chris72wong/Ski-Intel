@@ -160,6 +160,32 @@ main {
     border-color: #007acc;
 }
 
+/* Horizontal Card */
+.card-horizontal {
+    grid-column: 1 / -1;
+    background: #252526;
+    border: 1px solid #3e3e42;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.card-horizontal:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0, 122, 204, 0.3);
+    border-color: #007acc;
+}
+
+.youtube-placeholder {
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1e1e1e;
+    border-radius: 4px;
+    color: #858585;
+}
+
 .card-header {
     background: #2d2d30;
     border-bottom: 2px solid #007acc;
@@ -206,6 +232,80 @@ main {
 
 .info-item:hover {
     border-color: #007acc;
+}
+
+/* Hourly Weather Scroll */
+.hourly-weather-scroll {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 0.5rem 0;
+    scroll-behavior: smooth;
+}
+
+.hourly-weather-scroll::-webkit-scrollbar {
+    height: 8px;
+}
+
+.hourly-weather-scroll::-webkit-scrollbar-track {
+    background: #2d2d30;
+    border-radius: 4px;
+}
+
+.hourly-weather-scroll::-webkit-scrollbar-thumb {
+    background: #007acc;
+    border-radius: 4px;
+}
+
+.hourly-weather-scroll::-webkit-scrollbar-thumb:hover {
+    background: #4fc3f7;
+}
+
+.hourly-item {
+    flex: 0 0 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: #2d2d30;
+    border: 1px solid #3e3e42;
+    border-radius: 6px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.hourly-item:hover {
+    border-color: #007acc;
+    transform: translateY(-2px);
+}
+
+.hourly-item.current-hour {
+    border-color: #4ec9b0;
+    background: #2d3a30;
+}
+
+.hour-time {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4fc3f7;
+}
+
+.hour-temp {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ce9178;
+}
+
+.hour-condition {
+    font-size: 0.8rem;
+    color: #d4d4d4;
+    opacity: 0.9;
+}
+
+.hour-precip {
+    font-size: 0.75rem;
+    color: #4ec9b0;
+    opacity: 0.8;
 }
 
 .info-item .label {
