@@ -3,16 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ski Conditions</title>
+    <title>Ski Intel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header class="header">
         <div class="container">
-            <h1>⛷️ Ski Intel</h1>
-            <p class="tagline">Real-time ski conditions and travel info</p>
+            <div class="header-content">
+                <div class="header-temp" id="header-temp">
+                    <div class="temp-actual">--°C</div>
+                    <div class="temp-feels">Feels like --°C</div>
+                </div>
+                <div class="header-main">
+                    <h1>⛷️ Ski Intel</h1>
+                    <p class="tagline">Real-time ski conditions and travel info</p>
+                </div>
+                <div class="header-holidays">
+                    <div class="holidays-title">US Federal Holidays</div>
+                    <div class="holiday-item">Jan 20 - MLK Day</div>
+                    <div class="holiday-item">Feb 17 - Presidents' Day</div>
+                    <div class="holiday-item">Mar 31 - Cesar Chavez Day</div>
+                </div>
+                <div class="header-holidays">
+                    <div class="holidays-title">CA Federal Holidays</div>
+                    <div class="holiday-item">Jan 1 - New Year's Day</div>
+                    <div class="holiday-item">Feb 16 - Family Day</div>
+                    <div class="holiday-item">Mar 17 - St. Patrick's Day</div>
+                </div>
+            </div>
         </div>
     </header>
+
+    <!-- Border Wait Times Banner -->
+    <div class="border-banner">
+        <div class="container">
+            <div class="border-banner-header">
+                <h3>🛂 Border Crossing Wait Times</h3>
+                <span class="border-info">Check <a href="https://bwt.cbp.gov/" target="_blank">CBP Website</a> for live updates</span>
+            </div>
+        </div>
+    </div>
 
     <main class="container">
         <!-- Weather Section -->
@@ -65,142 +98,38 @@
             </div>
         </section>
 
-        <!-- Border Wait Times Section -->
+        <!-- Navigation Section -->
         <section class="card">
             <div class="card-header">
-                <h2>🛂 Border Wait Times</h2>
-                <p class="last-updated" id="border-updated">Loading...</p>
+                <h2>🗺️ Route to Holiday Valley</h2>
+                <p class="last-updated">From Peace Bridge</p>
             </div>
             <div class="card-content">
-                <div id="border-error" class="error-message" style="display: none;"></div>
-                <div id="border-data">
-                    <div class="border-loading">Loading bridge wait times...</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Live Traffic Camera Section -->
-        <section class="card camera-section">
-            <div class="card-header">
-                <h2>📹 Live Bridge Camera</h2>
-                <p class="last-updated">Peace Bridge - US Entry Side</p>
-            </div>
-            <div class="card-content camera-content">
-                <div class="video-wrapper">
-                    <iframe 
-                        src="https://www.youtube.com/embed/9En2186vo5g?autoplay=1&mute=1" 
-                        title="Peace Bridge Live Camera" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
-            </div>
-        </section>
-
-        <!-- Traffic Section -->
-        <section class="card">
-            <div class="card-header">
-                <h2>🚗 Traffic Conditions</h2>
-            </div>
-            <div class="card-content">
-                <div class="traffic-item">
-                    <div class="route">I-87 North (Northway)</div>
-                    <div class="status status-good">✓ Light</div>
-                </div>
-                <div class="traffic-item">
-                    <div class="route">I-90 East (New York)</div>
-                    <div class="status status-moderate">⚠ Moderate</div>
-                </div>
-                <div class="traffic-item">
-                    <div class="route">Route 20 (Pennsylvania)</div>
-                    <div class="status status-good">✓ Light</div>
-                </div>
-                <div class="traffic-item">
-                    <div class="route">QEW (Ontario)</div>
-                    <div class="status status-heavy">⛔ Heavy</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- State Holidays Section -->
-        <section class="card">
-            <div class="card-header">
-                <h2>📅 Upcoming Holidays</h2>
-            </div>
-            <div class="card-content">
-                <div class="holiday-grid">
-                    <div class="holiday-region">
-                        <h3>Ohio</h3>
-                        <ul class="holiday-list">
-                            <li>
-                                <span class="holiday-date">Jan 20</span>
-                                <span class="holiday-name">MLK Day</span>
-                            </li>
-                            <li>
-                                <span class="holiday-date">Feb 17</span>
-                                <span class="holiday-name">Presidents' Day</span>
-                            </li>
-                            <li>
-                                <span class="holiday-date">May 26</span>
-                                <span class="holiday-name">Memorial Day</span>
-                            </li>
-                        </ul>
+                <div class="route-info">
+                    <div class="route-detail">
+                        <span class="route-icon">📍</span>
+                        <div class="route-text">
+                            <div class="route-label">Distance</div>
+                            <div class="route-value">50 miles (80 km)</div>
+                        </div>
                     </div>
-
-                    <div class="holiday-region">
-                        <h3>Pennsylvania</h3>
-                        <ul class="holiday-list">
-                            <li>
-                                <span class="holiday-date">Jan 20</span>
-                                <span class="holiday-name">MLK Day</span>
-                            </li>
-                            <li>
-                                <span class="holiday-date">Feb 17</span>
-                                <span class="holiday-name">Presidents' Day</span>
-                            </li>
-                            <li>
-                                <span class="holiday-date">May 26</span>
-                                <span class="holiday-name">Memorial Day</span>
-                            </li>
-                        </ul>
+                    <div class="route-detail">
+                        <span class="route-icon">⏱️</span>
+                        <div class="route-text">
+                            <div class="route-label">Travel Time</div>
+                            <div class="route-value">1 hour 5 mins</div>
+                        </div>
                     </div>
-
-                    <div class="holiday-region">
-                        <h3>New York</h3>
-                        <ul class="holiday-list">
-                            <li>
-                                <span class="holiday-date">Jan 20</span>
-                                <span class="holiday-name">MLK Day</span>
-                            </li>
-                            <li>
-                                <span class="holiday-date">Feb 17</span>
-                                <span class="holiday-name">Presidents' Day</span>
-                            </li>
-                            <li>
-                                <span class="holiday-date">May 26</span>
-                                <span class="holiday-name">Memorial Day</span>
-                            </li>
-                        </ul>
+                    <div class="route-detail">
+                        <span class="route-icon">🛣️</span>
+                        <div class="route-text">
+                            <div class="route-label">Recommended Route</div>
+                            <div class="route-value">Via I-90 E and NY-219 S</div>
+                        </div>
                     </div>
-
-                    <div class="holiday-region">
-                        <h3>Ontario, Canada</h3>
-                        <ul class="holiday-list">
-                            <li>
-                                <span class="holiday-date">Jan 20</span>
-                                <span class="holiday-name">Family Day</span>
-                            </li>
-                            <li>
-                                <span class="holiday-date">Mar 17</span>
-                                <span class="holiday-name">St. Patrick's Day (obs.)</span>
-                            </li>
-                            <li>
-                                <span class="holiday-date">May 19</span>
-                                <span class="holiday-name">Victoria Day</span>
-                            </li>
-                        </ul>
-                    </div>
+                </div>
+                <div class="map-link">
+                    <a href="https://www.google.com/maps/dir/?api=1&origin=Peace+Bridge+Buffalo+NY&destination=Holiday+Valley+Ellicottville+NY&travelmode=driving" target="_blank" class="btn-map">Open in Google Maps 🔗</a>
                 </div>
             </div>
         </section>
@@ -215,33 +144,15 @@
         const ELLICOTTVILLE_LON = -78.6706;
         const WEATHER_REFRESH_MS = 6 * 60 * 60 * 1000; // 6 hours
         const NOAA_REFRESH_MS = 6 * 60 * 60 * 1000; // 6 hours
-        const BORDER_REFRESH_MS = 5 * 60 * 1000; // 5 minutes
 
         const weatherCodeMap = {
-            0: 'Clear',
-            1: 'Mainly Clear',
-            2: 'Partly Cloudy',
-            3: 'Overcast',
-            45: 'Foggy',
-            48: 'Foggy',
-            51: 'Light Drizzle',
-            53: 'Drizzle',
-            55: 'Heavy Drizzle',
-            61: 'Light Rain',
-            63: 'Rain',
-            65: 'Heavy Rain',
-            71: 'Light Snow',
-            73: 'Snow',
-            75: 'Heavy Snow',
-            77: 'Snow Grains',
-            80: 'Light Showers',
-            81: 'Showers',
-            82: 'Heavy Showers',
-            85: 'Light Snow Showers',
-            86: 'Snow Showers',
-            95: 'Thunderstorm',
-            96: 'Thunderstorm with Hail',
-            99: 'Thunderstorm with Hail'
+            0: 'Clear', 1: 'Mainly Clear', 2: 'Partly Cloudy', 3: 'Overcast',
+            45: 'Foggy', 48: 'Foggy', 51: 'Light Drizzle', 53: 'Drizzle', 55: 'Heavy Drizzle',
+            61: 'Light Rain', 63: 'Rain', 65: 'Heavy Rain',
+            71: 'Light Snow', 73: 'Snow', 75: 'Heavy Snow', 77: 'Snow Grains',
+            80: 'Light Showers', 81: 'Showers', 82: 'Heavy Showers',
+            85: 'Light Snow Showers', 86: 'Snow Showers',
+            95: 'Thunderstorm', 96: 'Thunderstorm with Hail', 99: 'Thunderstorm with Hail'
         };
 
         function formatRelativeTime(date) {
@@ -260,7 +171,6 @@
         function updateRelativeTimes() {
             const weatherTime = localStorage.getItem('weather-timestamp');
             const noaaTime = localStorage.getItem('noaa-timestamp');
-            const borderTime = localStorage.getItem('border-timestamp');
 
             if (weatherTime) {
                 document.getElementById('weather-updated').textContent = 
@@ -271,22 +181,26 @@
                 document.getElementById('noaa-updated').textContent = 
                     `Updated ${formatRelativeTime(new Date(parseInt(noaaTime)))}`;
             }
-
-            if (borderTime) {
-                document.getElementById('border-updated').textContent = 
-                    `Updated ${formatRelativeTime(new Date(parseInt(borderTime)))}`;
-            }
         }
 
         async function fetchWeatherData() {
             try {
-                const url = `https://api.open-meteo.com/v1/forecast?latitude=${ELLICOTTVILLE_LAT}&longitude=${ELLICOTTVILLE_LON}&current=temperature_2m,weather_code,wind_speed_10m,precipitation&temperature_unit=celsius&wind_speed_unit=kmh`;
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${ELLICOTTVILLE_LAT}&longitude=${ELLICOTTVILLE_LON}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation&temperature_unit=celsius&wind_speed_unit=kmh`;
                 
                 const response = await fetch(url);
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 
                 const data = await response.json();
                 const current = data.current;
+
+                // Update header temperature
+                const headerTemp = document.getElementById('header-temp');
+                if (headerTemp) {
+                    headerTemp.innerHTML = `
+                        <div class="temp-actual">${current.temperature_2m.toFixed(1)}°C</div>
+                        <div class="temp-feels">Feels like ${current.apparent_temperature.toFixed(1)}°C</div>
+                    `;
+                }
 
                 const weatherHTML = `
                     <div class="info-item">
