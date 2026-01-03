@@ -69,30 +69,31 @@
         <section class="card">
             <div class="card-header">
                 <h2>🛂 Border Wait Times</h2>
+                <p class="last-updated" id="border-updated">Loading...</p>
             </div>
             <div class="card-content">
-                <div class="border-item">
-                    <div class="border-name">Niagara Falls (Lewiston-Queenston)</div>
-                    <div class="wait-time">
-                        <span class="direction">Northbound:</span>
-                        <span class="time wait-high">45 minutes</span>
-                    </div>
-                    <div class="wait-time">
-                        <span class="direction">Southbound:</span>
-                        <span class="time wait-moderate">30 minutes</span>
-                    </div>
+                <div id="border-error" class="error-message" style="display: none;"></div>
+                <div id="border-data">
+                    <div class="border-loading">Loading bridge wait times...</div>
                 </div>
-                <hr>
-                <div class="border-item">
-                    <div class="border-name">Rainbow Bridge</div>
-                    <div class="wait-time">
-                        <span class="direction">Northbound:</span>
-                        <span class="time wait-moderate">35 minutes</span>
-                    </div>
-                    <div class="wait-time">
-                        <span class="direction">Southbound:</span>
-                        <span class="time wait-low">15 minutes</span>
-                    </div>
+            </div>
+        </section>
+
+        <!-- Live Traffic Camera Section -->
+        <section class="card camera-section">
+            <div class="card-header">
+                <h2>📹 Live Bridge Camera</h2>
+                <p class="last-updated">Peace Bridge - US Entry Side</p>
+            </div>
+            <div class="card-content camera-content">
+                <div class="video-wrapper">
+                    <iframe 
+                        src="https://www.youtube.com/embed/9En2186vo5g?autoplay=1&mute=1" 
+                        title="Peace Bridge Live Camera" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                    </iframe>
                 </div>
             </div>
         </section>
@@ -214,6 +215,7 @@
         const ELLICOTTVILLE_LON = -78.6706;
         const WEATHER_REFRESH_MS = 6 * 60 * 60 * 1000; // 6 hours
         const NOAA_REFRESH_MS = 6 * 60 * 60 * 1000; // 6 hours
+        const BORDER_REFRESH_MS = 5 * 60 * 1000; // 5 minutes
 
         const weatherCodeMap = {
             0: 'Clear',
@@ -258,6 +260,7 @@
         function updateRelativeTimes() {
             const weatherTime = localStorage.getItem('weather-timestamp');
             const noaaTime = localStorage.getItem('noaa-timestamp');
+            const borderTime = localStorage.getItem('border-timestamp');
 
             if (weatherTime) {
                 document.getElementById('weather-updated').textContent = 
@@ -267,6 +270,11 @@
             if (noaaTime) {
                 document.getElementById('noaa-updated').textContent = 
                     `Updated ${formatRelativeTime(new Date(parseInt(noaaTime)))}`;
+            }
+
+            if (borderTime) {
+                document.getElementById('border-updated').textContent = 
+                    `Updated ${formatRelativeTime(new Date(parseInt(borderTime)))}`;
             }
         }
 
@@ -420,6 +428,75 @@
             }
         }
 
+        async function fetchBorderWaitTimes() {
+            try {
+                const proxyUrl = 'https://api.allorigins.win/raw?url=';
+                const targetUrl = encodeURIComponent('https://bwt.cbp.gov/api/bwtpublic');
+                
+                const response = await fetch(proxyUrl + targetUrl);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const data = await response.json();
+                
+                const portMap = {
+                    '090109': 'Peace Bridge',
+                    '090110': 'Rainbow Bridge', 
+                    '090111': 'Whirlpool Rapids Bridge',
+                    '090112': 'Lewiston-Queenston Bridge'
+                };
+                
+                const relevantPorts = ['090109', '090110', '090111', '090112'];
+                let borderHTML = '';
+                
+                data.forEach((port, index) => {
+                    if (relevantPorts.includes(port.port_number)) {
+                        const portName = portMap[port.port_number] || port.port_name;
+                        const passengerDelay = parseInt(port.passenger_vehicle_delay) || 0;
+                        
+                        let delayClass = 'wait-low';
+                        if (passengerDelay > 30) delayClass = 'wait-high';
+                        else if (passengerDelay > 15) delayClass = 'wait-moderate';
+                        
+                        borderHTML += `
+                            <div class="border-item">
+                                <div class="border-name">${portName}</div>
+                                <div class="wait-time">
+                                    <span class="direction">Passenger Vehicles:</span>
+                                    <span class="time ${delayClass}">${passengerDelay} min</span>
+                                </div>
+                            </div>
+                        `;
+                        
+                        if (index < relevantPorts.length - 1) borderHTML += '<hr>';
+                    }
+                });
+
+                if (borderHTML) {
+                    document.getElementById('border-data').innerHTML = borderHTML;
+                    document.getElementById('border-error').style.display = 'none';
+                    
+                    localStorage.setItem('border-timestamp', Date.now().toString());
+                    localStorage.setItem('border-data', borderHTML);
+                    
+                    updateRelativeTimes();
+                } else {
+                    throw new Error('No bridge data found');
+                }
+            } catch (error) {
+                console.error('Border wait times fetch error:', error);
+                document.getElementById('border-error').textContent = 
+                    `⚠️ Unable to load border wait times: ${error.message}`;
+                document.getElementById('border-error').style.display = 'block';
+                
+                const cached = localStorage.getItem('border-data');
+                if (cached) {
+                    document.getElementById('border-data').innerHTML = cached + '<p class="cached-note">(Cached data)</p>';
+                } else {
+                    document.getElementById('border-data').innerHTML = '<p class="border-loading">No data available</p>';
+                }
+            }
+        }
+
         function shouldRefresh(timestampKey, intervalMs) {
             const lastUpdate = localStorage.getItem(timestampKey);
             if (!lastUpdate) return true;
@@ -475,6 +552,15 @@
                 }
             }
 
+            if (shouldRefresh('border-timestamp', BORDER_REFRESH_MS)) {
+                fetchBorderWaitTimes();
+            } else {
+                const cached = localStorage.getItem('border-data');
+                if (cached) {
+                    document.getElementById('border-data').innerHTML = cached;
+                }
+            }
+
             updateRelativeTimes();
         }
 
@@ -489,6 +575,11 @@
             setInterval(() => {
                 if (shouldRefresh('noaa-timestamp', NOAA_REFRESH_MS)) {
                     fetchNOAAData();
+                }
+            }, 60000);
+            setInterval(() => {
+                if (shouldRefresh('border-timestamp', BORDER_REFRESH_MS)) {
+                    fetchBorderWaitTimes();
                 }
             }, 60000);
         });
