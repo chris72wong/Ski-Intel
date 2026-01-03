@@ -18,25 +18,48 @@
         <!-- Weather Section -->
         <section class="card">
             <div class="card-header">
-                <h2>🌨️ Weather</h2>
+                <h2>🌨️ Weather - Ellicottville, NY</h2>
+                <p class="last-updated" id="weather-updated">Loading...</p>
             </div>
             <div class="card-content">
-                <div class="info-grid">
+                <div id="weather-error" class="error-message" style="display: none;"></div>
+                <div class="info-grid" id="weather-data">
                     <div class="info-item">
                         <span class="label">Temperature</span>
-                        <span class="value">24°F / -4°C</span>
+                        <span class="value loading-placeholder">--°C</span>
                     </div>
                     <div class="info-item">
                         <span class="label">Conditions</span>
-                        <span class="value">Partly Cloudy</span>
+                        <span class="value loading-placeholder">--</span>
                     </div>
                     <div class="info-item">
                         <span class="label">Wind Speed</span>
-                        <span class="value">12 mph</span>
+                        <span class="value loading-placeholder">-- km/h</span>
                     </div>
                     <div class="info-item">
+                        <span class="label">Precipitation</span>
+                        <span class="value loading-placeholder">-- mm</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NOAA Snow Depth Section -->
+        <section class="card">
+            <div class="card-header">
+                <h2>❄️ NOAA Snow Depth</h2>
+                <p class="last-updated" id="noaa-updated">Loading...</p>
+            </div>
+            <div class="card-content">
+                <div id="noaa-error" class="error-message" style="display: none;"></div>
+                <div class="info-grid" id="noaa-data">
+                    <div class="info-item">
                         <span class="label">Snow Depth</span>
-                        <span class="value">18 inches</span>
+                        <span class="value loading-placeholder">-- cm</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">24h Change</span>
+                        <span class="value loading-placeholder">-- cm</span>
                     </div>
                 </div>
             </div>
@@ -185,5 +208,290 @@
     <footer class="footer">
         <p>&copy; 2026 Ski Intel. Stay safe on the slopes!</p>
     </footer>
+
+    <script>
+        const ELLICOTTVILLE_LAT = 42.2773;
+        const ELLICOTTVILLE_LON = -78.6706;
+        const WEATHER_REFRESH_MS = 6 * 60 * 60 * 1000; // 6 hours
+        const NOAA_REFRESH_MS = 6 * 60 * 60 * 1000; // 6 hours
+
+        const weatherCodeMap = {
+            0: 'Clear',
+            1: 'Mainly Clear',
+            2: 'Partly Cloudy',
+            3: 'Overcast',
+            45: 'Foggy',
+            48: 'Foggy',
+            51: 'Light Drizzle',
+            53: 'Drizzle',
+            55: 'Heavy Drizzle',
+            61: 'Light Rain',
+            63: 'Rain',
+            65: 'Heavy Rain',
+            71: 'Light Snow',
+            73: 'Snow',
+            75: 'Heavy Snow',
+            77: 'Snow Grains',
+            80: 'Light Showers',
+            81: 'Showers',
+            82: 'Heavy Showers',
+            85: 'Light Snow Showers',
+            86: 'Snow Showers',
+            95: 'Thunderstorm',
+            96: 'Thunderstorm with Hail',
+            99: 'Thunderstorm with Hail'
+        };
+
+        function formatRelativeTime(date) {
+            const now = new Date();
+            const diff = now - date;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+
+            if (minutes < 1) return 'just now';
+            if (minutes < 60) return `${minutes}m ago`;
+            if (hours < 24) return `${hours}h ago`;
+            return `${days}d ago`;
+        }
+
+        function updateRelativeTimes() {
+            const weatherTime = localStorage.getItem('weather-timestamp');
+            const noaaTime = localStorage.getItem('noaa-timestamp');
+
+            if (weatherTime) {
+                document.getElementById('weather-updated').textContent = 
+                    `Updated ${formatRelativeTime(new Date(parseInt(weatherTime)))}`;
+            }
+
+            if (noaaTime) {
+                document.getElementById('noaa-updated').textContent = 
+                    `Updated ${formatRelativeTime(new Date(parseInt(noaaTime)))}`;
+            }
+        }
+
+        async function fetchWeatherData() {
+            try {
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${ELLICOTTVILLE_LAT}&longitude=${ELLICOTTVILLE_LON}&current=temperature_2m,weather_code,wind_speed_10m,precipitation&temperature_unit=celsius&wind_speed_unit=kmh`;
+                
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const data = await response.json();
+                const current = data.current;
+
+                const weatherHTML = `
+                    <div class="info-item">
+                        <span class="label">Temperature</span>
+                        <span class="value">${current.temperature_2m.toFixed(1)}°C</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Conditions</span>
+                        <span class="value">${weatherCodeMap[current.weather_code] || 'Unknown'}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Wind Speed</span>
+                        <span class="value">${current.wind_speed_10m.toFixed(1)} km/h</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Precipitation</span>
+                        <span class="value">${current.precipitation.toFixed(1)} mm</span>
+                    </div>
+                `;
+
+                document.getElementById('weather-data').innerHTML = weatherHTML;
+                document.getElementById('weather-error').style.display = 'none';
+                
+                localStorage.setItem('weather-timestamp', Date.now().toString());
+                localStorage.setItem('weather-data', JSON.stringify(current));
+                
+                updateRelativeTimes();
+            } catch (error) {
+                console.error('Weather fetch error:', error);
+                document.getElementById('weather-error').textContent = 
+                    `⚠️ Unable to load weather data: ${error.message}`;
+                document.getElementById('weather-error').style.display = 'block';
+                
+                const cached = localStorage.getItem('weather-data');
+                if (cached) {
+                    const current = JSON.parse(cached);
+                    const weatherHTML = `
+                        <div class="info-item">
+                            <span class="label">Temperature</span>
+                            <span class="value">${current.temperature_2m.toFixed(1)}°C</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Conditions</span>
+                            <span class="value">${weatherCodeMap[current.weather_code] || 'Unknown'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Wind Speed</span>
+                            <span class="value">${current.wind_speed_10m.toFixed(1)} km/h</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Precipitation</span>
+                            <span class="value">${current.precipitation.toFixed(1)} mm</span>
+                        </div>
+                    `;
+                    document.getElementById('weather-data').innerHTML = weatherHTML + '<p class="cached-note">(Cached data)</p>';
+                }
+            }
+        }
+
+        async function fetchNOAAData() {
+            try {
+                const pointUrl = `https://api.weather.gov/points/${ELLICOTTVILLE_LAT},${ELLICOTTVILLE_LON}`;
+                const pointResponse = await fetch(pointUrl);
+                if (!pointResponse.ok) throw new Error(`HTTP ${pointResponse.status}`);
+                
+                const pointData = await pointResponse.json();
+                const stationUrl = pointData.properties.observationStations;
+                
+                const stationResponse = await fetch(stationUrl);
+                if (!stationResponse.ok) throw new Error(`HTTP ${stationResponse.status}`);
+                
+                const stationData = await stationResponse.json();
+                const stationId = stationData.features[0]?.id;
+                
+                if (!stationId) throw new Error('No station found');
+                
+                const obsUrl = `${stationId}/observations/latest`;
+                const obsResponse = await fetch(obsUrl);
+                if (!obsResponse.ok) throw new Error(`HTTP ${obsResponse.status}`);
+                
+                const obsData = await obsResponse.json();
+                const snowDepth = obsData.properties.snowDepth?.value;
+                
+                let snowDepthCm = 'N/A';
+                let change24h = 'N/A';
+                
+                if (snowDepth !== null && snowDepth !== undefined) {
+                    snowDepthCm = (snowDepth * 100).toFixed(1);
+                    
+                    const prevDepth = localStorage.getItem('noaa-prev-depth');
+                    if (prevDepth !== null) {
+                        const diff = snowDepth - parseFloat(prevDepth);
+                        change24h = (diff > 0 ? '+' : '') + (diff * 100).toFixed(1);
+                    }
+                    localStorage.setItem('noaa-prev-depth', snowDepth.toString());
+                } else {
+                    snowDepthCm = 'No data';
+                }
+
+                const noaaHTML = `
+                    <div class="info-item">
+                        <span class="label">Snow Depth</span>
+                        <span class="value">${snowDepthCm}${snowDepthCm !== 'No data' && snowDepthCm !== 'N/A' ? ' cm' : ''}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">24h Change</span>
+                        <span class="value">${change24h}${change24h !== 'N/A' ? ' cm' : ''}</span>
+                    </div>
+                `;
+
+                document.getElementById('noaa-data').innerHTML = noaaHTML;
+                document.getElementById('noaa-error').style.display = 'none';
+                
+                localStorage.setItem('noaa-timestamp', Date.now().toString());
+                localStorage.setItem('noaa-data', JSON.stringify({ snowDepth, change24h }));
+                
+                updateRelativeTimes();
+            } catch (error) {
+                console.error('NOAA fetch error:', error);
+                document.getElementById('noaa-error').textContent = 
+                    `⚠️ Unable to load NOAA data: ${error.message}`;
+                document.getElementById('noaa-error').style.display = 'block';
+                
+                const cached = localStorage.getItem('noaa-data');
+                if (cached) {
+                    const data = JSON.parse(cached);
+                    const noaaHTML = `
+                        <div class="info-item">
+                            <span class="label">Snow Depth</span>
+                            <span class="value">${data.snowDepth !== null ? (data.snowDepth * 100).toFixed(1) + ' cm' : 'No data'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">24h Change</span>
+                            <span class="value">${data.change24h} cm</span>
+                        </div>
+                    `;
+                    document.getElementById('noaa-data').innerHTML = noaaHTML + '<p class="cached-note">(Cached data)</p>';
+                }
+            }
+        }
+
+        function shouldRefresh(timestampKey, intervalMs) {
+            const lastUpdate = localStorage.getItem(timestampKey);
+            if (!lastUpdate) return true;
+            return (Date.now() - parseInt(lastUpdate)) > intervalMs;
+        }
+
+        function initData() {
+            if (shouldRefresh('weather-timestamp', WEATHER_REFRESH_MS)) {
+                fetchWeatherData();
+            } else {
+                const cached = localStorage.getItem('weather-data');
+                if (cached) {
+                    const current = JSON.parse(cached);
+                    const weatherHTML = `
+                        <div class="info-item">
+                            <span class="label">Temperature</span>
+                            <span class="value">${current.temperature_2m.toFixed(1)}°C</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Conditions</span>
+                            <span class="value">${weatherCodeMap[current.weather_code] || 'Unknown'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Wind Speed</span>
+                            <span class="value">${current.wind_speed_10m.toFixed(1)} km/h</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Precipitation</span>
+                            <span class="value">${current.precipitation.toFixed(1)} mm</span>
+                        </div>
+                    `;
+                    document.getElementById('weather-data').innerHTML = weatherHTML;
+                }
+            }
+
+            if (shouldRefresh('noaa-timestamp', NOAA_REFRESH_MS)) {
+                fetchNOAAData();
+            } else {
+                const cached = localStorage.getItem('noaa-data');
+                if (cached) {
+                    const data = JSON.parse(cached);
+                    const noaaHTML = `
+                        <div class="info-item">
+                            <span class="label">Snow Depth</span>
+                            <span class="value">${data.snowDepth !== null ? (data.snowDepth * 100).toFixed(1) + ' cm' : 'No data'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">24h Change</span>
+                            <span class="value">${data.change24h} cm</span>
+                        </div>
+                    `;
+                    document.getElementById('noaa-data').innerHTML = noaaHTML;
+                }
+            }
+
+            updateRelativeTimes();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initData();
+            setInterval(updateRelativeTimes, 60000);
+            setInterval(() => {
+                if (shouldRefresh('weather-timestamp', WEATHER_REFRESH_MS)) {
+                    fetchWeatherData();
+                }
+            }, 60000);
+            setInterval(() => {
+                if (shouldRefresh('noaa-timestamp', NOAA_REFRESH_MS)) {
+                    fetchNOAAData();
+                }
+            }, 60000);
+        });
+    </script>
 </body>
 </html>
