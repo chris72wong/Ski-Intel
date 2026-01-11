@@ -17,10 +17,8 @@ body {
 /* Header */
 .header {
     background: #252526;
-    border-bottom: 2px solid #007acc;
     color: #d4d4d4;
     padding: 2rem 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
 }
 
 .header-content {
@@ -40,13 +38,13 @@ body {
 .temp-actual {
     font-size: 2rem;
     font-weight: 700;
-    color: #4fc3f7;
+    color: #ffffff;
 }
 
 .temp-feels {
     font-size: 0.85rem;
     opacity: 0.7;
-    color: #ce9178;
+    color: #d4d4d4;
 }
 
 .header-main {
@@ -57,7 +55,7 @@ body {
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
     font-weight: 700;
-    color: #4ec9b0;
+    color: #4ade80;
     text-transform: uppercase;
     letter-spacing: 2px;
 }
@@ -65,7 +63,7 @@ body {
 .header .tagline {
     font-size: 1rem;
     opacity: 0.8;
-    color: #ce9178;
+    color: #d4d4d4;
 }
 
 .header-holidays {
@@ -80,7 +78,7 @@ body {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #4ec9b0;
+    color: #4ade80;
     margin-bottom: 0.25rem;
 }
 
@@ -93,11 +91,9 @@ body {
 /* Border Banner */
 .border-banner {
     background: #2d2d30;
-    border-bottom: 1px solid #007acc;
     color: #d4d4d4;
     padding: 1rem 0;
     margin-bottom: 2rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .border-banner-header {
@@ -112,7 +108,7 @@ body {
     font-size: 1.1rem;
     font-weight: 600;
     margin: 0;
-    color: #4ec9b0;
+    color: #4ade80;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -123,7 +119,7 @@ body {
 }
 
 .border-info a {
-    color: #4fc3f7;
+    color: #ffffff;
     text-decoration: underline;
 }
 
@@ -148,16 +144,8 @@ main {
 .card {
     background: #252526;
     border: 1px solid #3e3e42;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    border-radius: 0;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 16px rgba(0, 122, 204, 0.3);
-    border-color: #007acc;
 }
 
 /* Horizontal Card */
@@ -165,15 +153,7 @@ main {
     grid-column: 1 / -1;
     background: #252526;
     border: 1px solid #3e3e42;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-}
-
-.card-horizontal:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 16px rgba(0, 122, 204, 0.3);
-    border-color: #007acc;
+    border-radius: 0;
 }
 
 .youtube-placeholder {
@@ -188,16 +168,18 @@ main {
 
 .card-header {
     background: #2d2d30;
-    border-bottom: 2px solid #007acc;
     color: #d4d4d4;
     padding: 1rem;
 }
 
 .card-header h2 {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
     margin: 0;
-    color: #4ec9b0;
-    font-weight: 700;
+    color: #4ade80;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
 }
 
 .last-updated {
@@ -205,7 +187,8 @@ main {
     font-size: 0.85rem;
     opacity: 0.7;
     font-weight: normal;
-    color: #ce9178;
+    color: #d4d4d4;
+    text-align: center;
 }
 
 .card-content {
@@ -231,7 +214,7 @@ main {
 }
 
 .info-item:hover {
-    border-color: #007acc;
+    border-color: #ffffff;
 }
 
 /* Hourly Weather Scroll */
@@ -253,12 +236,12 @@ main {
 }
 
 .hourly-weather-scroll::-webkit-scrollbar-thumb {
-    background: #007acc;
+    background: #ffffff;
     border-radius: 4px;
 }
 
 .hourly-weather-scroll::-webkit-scrollbar-thumb:hover {
-    background: #4fc3f7;
+    background: #ffffff;
 }
 
 .hourly-item {
@@ -275,7 +258,7 @@ main {
 }
 
 .hourly-item:hover {
-    border-color: #007acc;
+    border-color: #ffffff;
     transform: translateY(-2px);
 }
 
@@ -287,13 +270,13 @@ main {
 .hour-time {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #4fc3f7;
+    color: #ffffff;
 }
 
 .hour-temp {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #ce9178;
+    color: #d4d4d4;
 }
 
 .hour-condition {
@@ -319,7 +302,7 @@ main {
 .info-item .value {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #4fc3f7;
+    color: #ffffff;
 }
 
 .loading-placeholder {
@@ -372,9 +355,9 @@ main {
     align-items: flex-start;
     gap: 1rem;
     padding: 1rem;
-    background: #f8f9fa;
+    background: #2d2d30;
     border-radius: 6px;
-    border-left: 4px solid #1565c0;
+    border-left: 4px solid #ffffff;
 }
 
 .route-icon {
@@ -388,14 +371,14 @@ main {
 
 .route-label {
     font-size: 0.85rem;
-    color: #666;
+    color: #858585;
     margin-bottom: 0.25rem;
 }
 
 .route-value {
     font-size: 1rem;
     font-weight: 600;
-    color: #333;
+    color: #d4d4d4;
 }
 
 .map-link {
@@ -428,7 +411,7 @@ main {
 
 .wait-low {
     background: #c8e6c9;
-    color: #2e7d32;
+    color: #0ece6e;
 }
 
 .wait-moderate {
@@ -460,7 +443,7 @@ hr {
 }
 
 .traffic-item:hover {
-    border-color: #007acc;
+    border-color: #ffffff;
 }
 
 .traffic-item:last-child {
@@ -505,9 +488,9 @@ hr {
 }
 
 .holiday-region h3 {
-    color: #4ec9b0;
+    color: #4ade80;
     margin-bottom: 1rem;
-    border-bottom: 2px solid #007acc;
+    border-bottom: 2px solid #ffffff;
     padding-bottom: 0.5rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -531,7 +514,7 @@ hr {
 
 .holiday-date {
     font-weight: 600;
-    color: #4fc3f7;
+    color: #ffffff;
     min-width: 50px;
 }
 
@@ -587,14 +570,13 @@ hr {
 }
 
 .camera-info a {
-    color: #4fc3f7;
+    color: #ffffff;
     text-decoration: underline;
 }
 
 /* Footer */
 .footer {
     background: #252526;
-    border-top: 2px solid #007acc;
     color: #858585;
     text-align: center;
     padding: 2rem;

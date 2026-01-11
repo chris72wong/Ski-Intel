@@ -35,7 +35,7 @@
     <div class="border-banner">
         <div class="container">
             <div class="border-banner-header">
-                <h3>🛂 Border Crossing Wait Times</h3>
+                <h3>Border Crossing Wait Times</h3>
                 <span class="border-info">Check <a href="https://bwt.cbp.gov/" target="_blank">CBP Website</a> for live updates</span>
             </div>
         </div>
@@ -45,7 +45,7 @@
         <!-- Weather Section -->
         <section class="card">
             <div class="card-header">
-                <h2>🌨️ Weather - Ellicottville, NY</h2>
+                <h2>Weather - Ellicottville, NY</h2>
                 <p class="last-updated" id="weather-updated">Loading...</p>
             </div>
             <div class="card-content">
@@ -74,48 +74,36 @@
         <!-- NOAA Snow Depth Section -->
         <section class="card">
             <div class="card-header">
-                <h2>❄️ NOAA Snow Depth</h2>
-                <p class="last-updated" id="noaa-updated">Loading...</p>
+                <h2>NOAA Snow Depth</h2>
             </div>
             <div class="card-content">
-                <div id="noaa-error" class="error-message" style="display: none;"></div>
-                <div class="info-grid" id="noaa-data">
-                    <div class="info-item">
-                        <span class="label">Snow Depth</span>
-                        <span class="value loading-placeholder">-- cm</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="label">24h Change</span>
-                        <span class="value loading-placeholder">-- cm</span>
-                    </div>
-                </div>
             </div>
         </section>
 
         <!-- Navigation Section -->
         <section class="card">
             <div class="card-header">
-                <h2>🗺️ Route to Holiday Valley</h2>
+                <h2>Route to Holiday Valley</h2>
                 <p class="last-updated">From Peace Bridge</p>
             </div>
             <div class="card-content">
                 <div class="route-info">
                     <div class="route-detail">
-                        <span class="route-icon">📍</span>
+                        <span class="route-icon"></span>
                         <div class="route-text">
                             <div class="route-label">Distance</div>
                             <div class="route-value">50 miles (80 km)</div>
                         </div>
                     </div>
                     <div class="route-detail">
-                        <span class="route-icon">⏱️</span>
+                        <span class="route-icon"></span>
                         <div class="route-text">
                             <div class="route-label">Travel Time</div>
                             <div class="route-value">1 hour 5 mins</div>
                         </div>
                     </div>
                     <div class="route-detail">
-                        <span class="route-icon">🛣️</span>
+                        <span class="route-icon"></span>
                         <div class="route-text">
                             <div class="route-label">Recommended Route</div>
                             <div class="route-value">Via I-90 E and NY-219 S</div>
@@ -136,9 +124,9 @@
             <div class="card-content">
                 <div class="youtube-embed">
                     <iframe
-                        width="560"
-                        height="315"
-                        src="https://www.youtube.com/embed/9En2186vo5g?si=4bbBzgXkFscCTTup"
+                        width="100%"
+                        height="630"
+                        src="https://www.youtube.com/embed/9En2186vo5g?autoplay=1&mute=1&playsinline=1"
                         title="Peace Bridge US Entry Webcam"
                         frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -148,10 +136,24 @@
                 </div>
             </div>
         </section>
+
+        <!-- About This Project Section -->
+        <section class="card-horizontal">
+            <div class="card-header">
+                <h2>About This Project</h2>
+            </div>
+            <div class="card-content">
+                <p style="line-height: 1.8; margin: 0;">
+                    This project was created to help Canadians looking to ski in the Western New York region (or beyond) plan their cross-border ski/snowboarding trips more effectively. 
+                    By consolidating real-time border crossing wait times, traffic conditions, and snow conditions into one convenient dashboard, 
+                    skiers and/or snowboarders can know in advance what to expect with regards to weather and traffic on their journey to resorts like Holiday Valley.
+                </p>
+            </div>
+        </section>
     </main>
 
     <footer class="footer">
-        <p>&copy; 2026 Ski Intel. Stay safe on the slopes!</p>
+        <p>&copy; 2026 Ski Intel. Know before you go.</p>
     </footer>
 
     <script>
